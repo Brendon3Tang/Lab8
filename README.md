@@ -23,8 +23,7 @@ send a message to another user. A unit test does not fit since it cannot test ho
 ```
     beforeAll(async () => {
     await page.goto('http://127.0.0.1:5500');
-    const button = await page.$$('header > img');
-    await button.click();
-    await page.waitForNavigation();
+    await page.waitForTimeout(500);
+    await page.click('header > img');
     });
 ```

@@ -1,3 +1,5 @@
+import { expect } from "@jest/globals";
+
 describe('Basic user flow for SPA ', () => {
   beforeAll(async () => {
     await page.goto('http://127.0.0.1:5501');//5500
@@ -29,11 +31,23 @@ describe('Basic user flow for SPA ', () => {
 
   it('Test3: Clicking first <journal-entry>, new URL should contain /#entry1', async () => {
     // implement test3: Clicking on the first journal entry should update the URL to contain “/#entry1”
+    let curURL;
+    const entries = await page.$$('journal-entry');
+    
+    await entries[0].click();
+    await page.waitForNavigation();
 
+    curURL = page.url(); 
+    expect(curURL).toContain('/#entry1');
   });
 
   it('Test4: On first Entry page - checking page header title', async () => {
     // implement test4: Clicking on the first journal entry should update the header text to “Entry 1” 
+    const curTitle = await page.$eval("header > h1", (title) => {
+       return title.innerHTML;
+     })
+
+     expect(curTitle).toBe('Entry 1');
 
   });
 
@@ -60,8 +74,11 @@ describe('Basic user flow for SPA ', () => {
 
   it('Test7: Clicking the settings icon, new URL should contain #settings', async () => {
     // implement test7: Clicking on the settings icon should update the URL to contain “/#settings”
+    await page.click('header > img');
 
-  });
+    const curURL= page.url();
+    expect(curURL).toContain('/#settings');
+  }, 300000);
 
   it('Test8: On Settings page - checking page header title', async () => {
     // implement test8: Clicking on the settings icon should update the header to be “Settings”
@@ -75,11 +92,17 @@ describe('Basic user flow for SPA ', () => {
 
   it('Test10: Clicking the back button, new URL should be /#entry1', async() => {
     // implement test10: Clicking on the back button should update the URL to contain ‘/#entry1’
-
+    await page.goBack();
+    const curURL = page.url();
+    expect(curURL).toContain('/#entry1');
   });
 
   // define and implement test11: Clicking the back button once should bring the user back to the home page
-
+  it('Test11: Clicking the back button once should bring the user back to the home page', async() => {
+    await page.goBack();
+    const curURL = page.url();
+    expect(curURL).toBe('http://127.0.0.1:5501/');
+  });
 
   // define and implement test12: When the user if on the homepage, the header title should be “Journal Entries”
 

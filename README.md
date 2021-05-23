@@ -1,5 +1,9 @@
 # Lab8_Starter
 
+## Author(s):
+ - Long Tang
+ - Rong Zheng
+
 ## Check your understanding q's (FILL OUT)
 1. In your own words: Where would you fit your automated tests in your Bujo project development pipeline? (just write the letter)
     - I will pick 1.
@@ -12,6 +16,15 @@ send a message to another user. A unit test does not fit since it cannot test ho
     - Yes, I would use a unit test since the length belongs to a component that will not interact with others on an application level.
 
 4. What do you expect to happen if we run our puppeteer tests with the field “headless” set to true?
+    - If the "headless" is set to true, the browser won't pop out, so it will run the tests without a browser UI.
 
 5. What would your beforeAll callback look like if you wanted to start from the settings page before every test case?
-
+    - We can go to the settings page by clicking the setting button, so the code could look like:
+```
+    beforeAll(async () => {
+    await page.goto('http://127.0.0.1:5500');
+    const button = await page.$$('header > img');
+    await button.click();
+    await page.waitForNavigation();
+    });
+```
